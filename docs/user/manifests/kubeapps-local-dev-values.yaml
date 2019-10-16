@@ -5,4 +5,5 @@ tillerProxy:
 chartsvc:
   replicaCount: 1
 dashboard:
-  replicaCount: 1 
+  replicaCount: 1
+
