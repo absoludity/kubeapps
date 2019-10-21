@@ -10,7 +10,7 @@ kubeadmConfigPatchesJson6902:
       value: {}
     - op: add
       path: /apiServer/extraArgs/oidc-issuer-url
-      value: http://dex.dex:32000
+      value: https://dex.dex:32000
     - op: add
       path: /apiServer/extraArgs/oidc-client-id
       value: kubeapps
