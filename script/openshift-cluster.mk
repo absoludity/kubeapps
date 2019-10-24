@@ -31,7 +31,7 @@ devel/openshift-tiller-with-apprepository-rbac.yaml: devel/openshift-tiller-with
 # Error from server: invalid origin role binding tiller-apprepositories: attempts to reference
 # role in namespace "kubeapps" instead of current namespace "tiller"
 # The admin role is required because the following gives tiller a cluster-wide permission (crd-rbac).
-openshift-install-tiller: devel/openshift-tiller-with-crd-rbac.yaml devel/openshift-tiller-with-apprepository-rbac.yaml devel/openshift-kubeapps-project-created
+install-tiller-openshift: devel/openshift-tiller-with-crd-rbac.yaml devel/openshift-tiller-with-apprepository-rbac.yaml devel/openshift-kubeapps-project-created
 	@oc login -u system:admin
 	oc project ${TILLER_NAMESPACE}
 	oc apply -f devel/openshift-tiller-with-crd-rbac.yaml --wait=true
@@ -49,7 +49,7 @@ devel/openshift-kubeapps-project-created: devel/openshift-tiller-project-created
 chart/kubeapps/charts/mongodb-${MONGODB_CHART_VERSION}.tgz:
 	helm dep build ./chart/kubeapps
 
-devel/openshift-kubeapps-installed: openshift-install-tiller chart/kubeapps/charts/mongodb-${MONGODB_CHART_VERSION}.tgz
+devel/openshift-kubeapps-installed: install-tiller-openshift chart/kubeapps/charts/mongodb-${MONGODB_CHART_VERSION}.tgz
 	@oc project ${KUBEAPPS_NAMESPACE}
 	helm --tiller-namespace=${TILLER_NAMESPACE} install ./chart/kubeapps -n ${KUBEAPPS_NAMESPACE} \
 		--set tillerProxy.host=tiller-deploy.tiller:44134 \
@@ -67,9 +67,9 @@ openshift-tiller-token:
 		$(shell kubectl get serviceaccount -n "${TILLER_NAMESPACE}" tiller -o jsonpath='{range .secrets[*]}{.name}{"\n"}{end}' | grep tiller-token) \
 		-o go-template='{{.data.token | base64decode}}' && echo
 
-openshift-kubeapps: devel/openshift-kubeapps-installed
+deploy-kubeapps-openshift: devel/openshift-kubeapps-installed
 
-openshift-kubeapps-reset:
+reset-kubeapps-openshift:
 	@oc login -u system:admin
 	oc delete project ${KUBEAPPS_NAMESPACE} || true
 	oc delete project ${TILLER_NAMESPACE} || true
@@ -79,4 +79,4 @@ openshift-kubeapps-reset:
 	rm devel/openshift-* || true
 	oc login -u developer
 
-.PHONY: openshift-install-tiller openshift-kubeapps openshift-kubeapps-reset
+.PHONY: install-tiller-openshift deploy-kubeapps-openshift reset-kubeapps-openshift

@@ -4,6 +4,8 @@ GOFMT = /usr/bin/env gofmt
 IMAGE_TAG ?= dev-$(shell date +%FT%H-%M-%S-%Z)
 VERSION ?= $$(git rev-parse HEAD)
 
+include ./script/dev-deploy.mk
+include ./script/kind-cluster.mk
 include ./script/openshift-cluster.mk
 
 IMG_MODIFIER ?= 
