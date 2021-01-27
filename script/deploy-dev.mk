@@ -24,16 +24,16 @@ devel/localhost-cert.pem:
 
 deploy-dependencies: deploy-dex deploy-openldap devel/localhost-cert.pem deploy-pinniped
 	kubectl --kubeconfig=${CLUSTER_CONFIG} create namespace kubeapps
-	kubectl --kubeconfig=${CLUSTER_CONFIG} -n kubeapps create secret tls localhost-tls \
-		--key ./devel/localhost-key.pem \
-		--cert ./devel/localhost-cert.pem
 
 deploy-pinniped:
 	kubectl --kubeconfig=${CLUSTER_CONFIG} apply -f https://github.com/vmware-tanzu/pinniped/releases/download/v0.3.0/install-pinniped-concierge.yaml
 
+deploy-pinniped-additional:
+	kubectl --kubeconfig=${ADDITIONAL_CLUSTER_CONFIG} apply -f https://github.com/vmware-tanzu/pinniped/releases/download/v0.3.0/install-pinniped-concierge.yaml
 
 add-pinniped-jwt-authenticator:
 	kubectl --kubeconfig=${CLUSTER_CONFIG} apply -f ./docs/user/manifests/kubeapps-pinniped-jwt-authenticator.yaml
+	kubectl --kubeconfig=${ADDITIONAL_CLUSTER_CONFIG} apply -f ./docs/user/manifests/kubeapps-pinniped-jwt-authenticator.yaml
 
 
 deploy-dev-kubeapps:
@@ -41,7 +41,11 @@ deploy-dev-kubeapps:
 		--values ./docs/user/manifests/kubeapps-local-dev-values.yaml \
 		--values ./docs/user/manifests/kubeapps-local-dev-auth-proxy-values.yaml \
 		--values ./docs/user/manifests/kubeapps-local-dev-additional-kind-cluster.yaml \
-		--set pinnipedProxy.image.tag=test-pinniped --set pinnipedProxy.image.pullPolicy=Never
+		--set pinnipedProxy.image.tag=test-pinniped --set pinnipedProxy.image.pullPolicy=Never \
+		--set kubeops.image.tag=test-pinniped --set kubeops.image.pullPolicy=Never
+	kubectl --kubeconfig=${CLUSTER_CONFIG} -n kubeapps create secret tls localhost-tls \
+		--key ./devel/localhost-key.pem \
+		--cert ./devel/localhost-cert.pem
 
 deploy-dev: deploy-dependencies deploy-dev-kubeapps
 	@echo "\nYou can now simply open your browser at https://localhost/ to access Kubeapps!"
