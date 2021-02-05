@@ -18,4 +18,8 @@ ingress:
   enabled: true
   hostname: localhost
   tls: true
-
+pinnipedProxy:
+  enabled: true
+  image:
+    tag: test-pinniped
+    pullPolicy: Never
