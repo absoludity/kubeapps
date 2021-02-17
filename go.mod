@@ -26,7 +26,7 @@ require (
 	github.com/go-openapi/spec v0.19.4 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.4
 	github.com/gorilla/handlers v1.4.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/gregjones/httpcache v0.0.0-20181110185634-c63ab54fda8f // indirect
@@ -38,8 +38,8 @@ require (
 	github.com/lib/pq v1.9.0
 	github.com/opencontainers/image-spec v1.0.1
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.7.0
-	github.com/spf13/cobra v1.1.2
+	github.com/sirupsen/logrus v1.7.1
+	github.com/spf13/cobra v1.1.3
 	github.com/spf13/pflag v1.0.5
 	github.com/srwiley/oksvg v0.0.0-20200311192757-870daf9aa564
 	github.com/srwiley/rasterx v0.0.0-20200120212402-85cb7272f5e9
@@ -59,7 +59,7 @@ require (
 	helm.sh/helm/v3 v3.5.0
 	k8s.io/api v0.20.2
 	k8s.io/apimachinery v0.20.2
-	k8s.io/cli-runtime v0.20.1
+	k8s.io/cli-runtime v0.20.2
 	k8s.io/client-go v0.20.2
 	k8s.io/helm v2.17.0+incompatible
 	k8s.io/klog v1.0.0 // indirect
