@@ -18,6 +18,11 @@ deploy-openldap:
 	helm --kubeconfig=${CLUSTER_CONFIG} install ldap stable/openldap --namespace ldap \
 		--values ./docs/user/manifests/kubeapps-local-dev-openldap-values.yaml
 
+# The kapp-controller support for the new Package and PackageRepository CRDs is currently
+# only available in an alpha release.
+deploy-kapp-controller:
+	kubectl --kubeconfig=${CLUSTER_CONFIG} apply -f https://raw.githubusercontent.com/vmware-tanzu/carvel-kapp-controller/dev-packaging/alpha-releases/v0.18.0-alpha.5.yml
+
 # Get mkcert from https://github.com/FiloSottile/mkcert/releases
 devel/localhost-cert.pem:
 	mkcert -key-file ./devel/localhost-key.pem -cert-file ./devel/localhost-cert.pem localhost 172.18.0.2
@@ -28,7 +33,7 @@ deploy-dependencies: deploy-dex deploy-openldap devel/localhost-cert.pem
 		--key ./devel/localhost-key.pem \
 		--cert ./devel/localhost-cert.pem
 
-deploy-dev-kubeapps: 
+deploy-dev-kubeapps:
 	helm --kubeconfig=${CLUSTER_CONFIG} install kubeapps ./chart/kubeapps --namespace kubeapps --create-namespace \
 		--values ./docs/user/manifests/kubeapps-local-dev-values.yaml \
 		--values ./docs/user/manifests/kubeapps-local-dev-auth-proxy-values.yaml \
