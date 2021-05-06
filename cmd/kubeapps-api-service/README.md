@@ -1,4 +1,4 @@
-# Proof-of-concept for Kubeapps API service
+# Proof-of-concept for Kubeapps API aggregator service
 
 This is a work in progress, but outlines the tooling involved for providing a pluggable, extensible API service enabling Kubeapps (or other K8s packaging UIs) to support various package formats in a similar way.
 
